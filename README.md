@@ -16,6 +16,14 @@ A real-time algorithmic trading signal system with market microstructure analysi
 - **Professional Dashboard**: Real-time visualization with Streamlit
 - **RESTful API**: Full API for programmatic access
 
+
+## 📊 Dashboard Views
+
+| Main Dashboard | Signal Details |
+|:--------------:|:--------------:|
+| ![Main](screenshots/screenshots_dashboard.png) | ![Details](screenshots/screenshots_dashboard2.png) |
+
+
 ## 🏗️ Architecture
 
 ![Architecture Diagram](screenshots/architecture.png)
