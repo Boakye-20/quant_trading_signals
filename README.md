@@ -22,7 +22,7 @@ A real-time algorithmic trading signal system with market microstructure analysi
 | Main Dashboard | Signal Details |
 |:--------------:|:--------------:|
 | ![Main](screenshots/screenshots_dashboard.png) | ![Details](screenshots/screenshots_dashboard2.png) |
-
+Real-time trading signals with risk metrics and confidence scores
 
 ## 🏗️ Architecture
 
