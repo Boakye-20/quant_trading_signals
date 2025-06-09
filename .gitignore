@@ -1,0 +1,98 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv/
+
+# Environment Variables
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.vs/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Logs
+*.log
+logs/
+
+# Database
+*.db
+*.sqlite3
+data/
+
+# Sensitive or Large Files
+config_production.py
+secrets.py
+*.pkl
+*.h5
+*.pth
+*.weights
+
+# Test Coverage
+htmlcov/
+.coverage
+.pytest_cache/
+.tox/
+
+# Distribution
+dist/
+build/
+*.egg-info/
+.eggs/
+
+# Documentation
+docs/_build/
+site/
+
+# Temporary files
+*.tmp
+*.bak
+~$*
+
+# API Keys and Credentials
+api_keys.json
+credentials.json
+
+_original_version_backup/
+*_REAL.py
+*_PRODUCTION.py
+
+# Private folders - NEVER upload
+_original_version_backup/
+_dev/
+_production_config/
+_private_src/
+_real_implementation/
+
+# Private file patterns
+*_REAL.py
+*_PRODUCTION.py
+*.real.config
+real_*
+
+# Sensitive data
+*.pem
+*.key
+credentials/
+secrets/

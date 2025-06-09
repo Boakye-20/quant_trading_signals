@@ -1,0 +1,16 @@
+QUANTUM TRADING SIGNALS - SYSTEM ARCHITECTURE
+    =============================================
+
+    [Market Data]  ────────►  [FastAPI Server]  ────────►  [Dashboard]
+         │                           │                          │
+         │                           │                          │
+    Yahoo Finance              WebSocket Server           Streamlit UI
+    Price Data                Signal Generation          Live Updates
+    Indicators                Risk Management            Signal Cards
+         │                           │                          │
+         └───────────────────────────┴──────────────────────────┘
+                                     │
+                                     ▼
+                              [WebSocket Clients]
+                              Trading Bots
+                              Web Browsers
