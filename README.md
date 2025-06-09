@@ -1,4 +1,4 @@
-# Quantum Trading Signals 📊
+# Quant Trading Signals 📊
 
 A real-time algorithmic trading signal system with market microstructure analysis, built with FastAPI and Streamlit.
 
