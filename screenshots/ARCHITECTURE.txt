@@ -1,5 +1,4 @@
-QUANTUM TRADING SIGNALS - SYSTEM ARCHITECTURE
-    =============================================
+
 
     [Market Data]  ────────►  [FastAPI Server]  ────────►  [Dashboard]
          │                           │                          │
