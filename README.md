@@ -1,6 +1,6 @@
 # Quant Trading Signals 📊
 
-A real-time algorithmic trading signal system with market microstructure analysis, built with FastAPI and Streamlit.
+An algorithmic trading signal system with market microstructure analysis, built with FastAPI and Streamlit.
 
 ![Python](https://img.shields.io/badge/python-v3.11+-blue.svg)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.104.1-009688.svg)
