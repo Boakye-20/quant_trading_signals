@@ -269,11 +269,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👤 Author
 
-Paul Kwarteng
+**Paul Kwarteng**
+- LinkedIn: [Paul Kwarteng](https://www.linkedin.com/in/paul-kwarteng-22a71b196/)
 
-LinkedIn(https://www.linkedin.com/in/paul-kwarteng-22a71b196/)
-GitHub: @Boakye-20 - https://github.com/Boakye-20 
-
+**Dean Mahmood**
+- LinkedIn: [Dean Mahmood](https://www.linkedin.com/in/dean-mahmood-847aa21b5/)
 
 ---
 
