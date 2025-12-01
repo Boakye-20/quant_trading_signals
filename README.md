@@ -272,9 +272,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 **Paul Kwarteng**
 - LinkedIn: [Paul Kwarteng](https://www.linkedin.com/in/paul-kwarteng-22a71b196/)
 
-**Dean Mahmood**
-- LinkedIn: [Dean Mahmood](https://www.linkedin.com/in/dean-mahmood-847aa21b5/)
-
 ---
 
 **Note**: This project demonstrates advanced financial data processing and real-time systems architecture. For production use, additional components such as data validation, error handling, and regulatory compliance would be required.
