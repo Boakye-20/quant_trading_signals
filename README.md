@@ -109,11 +109,11 @@ asyncio.run(receive_signals())
 
 ## How a signal is built
 
-**Technical analysis** — moving averages (20, 50, 200), RSI, Bollinger Bands, volume.
+**Technical analysis:** moving averages (20, 50, 200), RSI, Bollinger Bands, volume.
 
-**Market microstructure** — order book imbalance, trade flow toxicity, bid-ask spread.
+**Market microstructure:** order book imbalance, trade flow toxicity, bid-ask spread.
 
-**Risk management** — Kelly Criterion position sizing, volatility-based stop-loss,
+**Risk management:** Kelly Criterion position sizing, volatility-based stop-loss,
 risk-reward optimisation.
 
 These are then combined into one weighted score with a confidence value.
