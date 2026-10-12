@@ -1,39 +1,64 @@
-# Quant Trading Signals 📊
+# Quant Trading Signals
 
-An algorithmic trading signal system with market microstructure analysis, built with FastAPI and Streamlit.
+A trading signal system that combines technical indicators with market
+microstructure analysis. A FastAPI backend generates the signals and streams them
+over WebSocket; a Streamlit dashboard displays them.
 
-![Python](https://img.shields.io/badge/python-v3.11+-blue.svg)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.104.1-009688.svg)
-![Streamlit](https://img.shields.io/badge/Streamlit-1.28.2-FF4B4B.svg)
-![License](https://img.shields.io/badge/license-MIT-green.svg)
+> **This runs on simulated market data.** It is a demonstration of the
+> architecture, not a trading system. Connecting it to a live feed would need real
+> data integration, backtesting, risk controls and regulatory compliance first.
 
-## 🚀 Features
+![Dashboard](screenshots/screenshots_dashboard.png)
 
-- **Real-time Signal Generation**: Analyzes 8 major symbols (SPY, QQQ, AAPL, MSFT, GOOGL, TSLA, JPM, BAC)
-- **WebSocket Streaming**: Live updates with <100ms latency
-- **Risk Management**: Position sizing, stop-loss, and take-profit calculations
-- **Market Microstructure**: Order flow analysis and liquidity detection
-- **Professional Dashboard**: Real-time visualization with Streamlit
-- **RESTful API**: Full API for programmatic access
+## What it does
 
+- Generates signals for eight symbols: SPY, QQQ, AAPL, MSFT, GOOGL, TSLA, JPM, BAC
+- Streams live updates over WebSocket
+- Sizes positions and sets stop-loss and take-profit levels
+- Analyses order flow and liquidity
+- Exposes everything through a REST API
 
-## 📊 Dashboard Views
+## Running it
 
-| Main Dashboard | Signal Details |
-|:--------------:|:--------------:|
-| ![Main](screenshots/screenshots_dashboard.png) | ![Details](screenshots/screenshots_dashboard2.png) |
-Real-time trading signals with risk metrics and confidence scores
+You need Python 3.11+.
 
-## 🏗️ Architecture
+```bash
+git clone https://github.com/Boakye-20/quant_trading_signals.git
+cd quant_trading_signals
 
-![Architecture Diagram](screenshots/architecture.png)
+python -m venv venv
+source venv/bin/activate          # Windows: venv\Scripts\activate
+pip install -r requirements.txt
 
-- **Backend**: FastAPI with WebSocket support
-- **Frontend**: Streamlit dashboard with auto-refresh
-- **Data**: Currently using simulated market data (ready for real data integration)
-- **Analysis**: Technical indicators + microstructure signals
+cp .env.example .env              # optional: API keys for real data sources
+```
 
-## 📊 Signal Example
+Start the API:
+
+```bash
+uvicorn api.main:app --reload     # http://localhost:8000
+```
+
+Then, in a second terminal, the dashboard:
+
+```bash
+streamlit run dashboard/app.py    # http://localhost:8501
+```
+
+## API
+
+| Endpoint | Method | What it does |
+| --- | --- | --- |
+| `/` | GET | API information |
+| `/health` | GET | Health check |
+| `/signals` | GET | All active signals |
+| `/signals/{symbol}` | GET | Signal for one symbol |
+| `/api/signals` | POST | Generate signals for given symbols |
+| `/api/risk` | GET | Portfolio risk metrics |
+
+WebSocket: `ws://localhost:8000/ws`
+
+A signal looks like this:
 
 ```json
 {
@@ -48,230 +73,77 @@ Real-time trading signals with risk metrics and confidence scores
 }
 ```
 
-## 🔧 Installation
-
-### Prerequisites
-
-- Python 3.11 or higher
-- Git
-- Virtual environment tool (venv)
-
-### Setup
-
-1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/quantum-trading-signals.git
-cd quantum-trading-signals
-```
-
-2. Create virtual environment:
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-3. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-4. Set up environment variables:
-```bash
-cp .env.example .env
-# Edit .env with your configuration
-```
-
-## 🚀 Quick Start
-
-### Start the API Server
+### Examples
 
 ```bash
-cd quantum-trading-signals
-venv\Scripts\activate  # On Windows
-uvicorn api.main:app --reload
+curl http://localhost:8000/health
+curl http://localhost:8000/signals
+curl http://localhost:8000/signals/AAPL
 ```
-
-The API will be available at http://localhost:8000
-
-### Start the Dashboard
-
-In a new terminal:
-```bash
-cd quantum-trading-signals
-venv\Scripts\activate  # On Windows
-streamlit run dashboard/app.py
-```
-
-The dashboard will open at http://localhost:8501
-
-## 📡 API Documentation
-
-### REST Endpoints
-
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/` | GET | API information |
-| `/health` | GET | Health check |
-| `/signals` | GET | Get all active signals |
-| `/signals/{symbol}` | GET | Get signal for specific symbol |
-| `/api/signals` | POST | Generate signals for specified symbols |
-| `/api/risk` | GET | Get portfolio risk metrics |
-
-### WebSocket
-
-Connect to `ws://localhost:8000/ws` for real-time signal streaming.
-
-## 💻 Usage Examples
-
-### Python REST API Client
 
 ```python
 import requests
 
-# Get all signals
-response = requests.get("http://localhost:8000/signals")
-signals = response.json()
+signals = requests.get("http://localhost:8000/signals").json()
 
-# Generate new signals
-response = requests.post(
+requests.post(
     "http://localhost:8000/api/signals",
-    json={"symbols": ["AAPL", "TSLA"], "lookback_days": 30}
+    json={"symbols": ["AAPL", "TSLA"], "lookback_days": 30},
 )
 ```
 
-### WebSocket Client
-
 ```python
-import asyncio
-import websockets
-import json
+import asyncio, json, websockets
 
 async def receive_signals():
-    uri = "ws://localhost:8000/ws"
-    async with websockets.connect(uri) as websocket:
-        # Subscribe to symbols
-        await websocket.send(json.dumps({
+    async with websockets.connect("ws://localhost:8000/ws") as ws:
+        await ws.send(json.dumps({
             "type": "subscribe",
-            "symbols": ["AAPL", "MSFT", "GOOGL"]
+            "symbols": ["AAPL", "MSFT", "GOOGL"],
         }))
-        
-        # Receive signals
         while True:
-            signal = await websocket.recv()
-            print(f"Received: {signal}")
+            print(await ws.recv())
 
 asyncio.run(receive_signals())
 ```
 
-### cURL Examples
+## How a signal is built
 
-```bash
-# Check health
-curl http://localhost:8000/health
+**Technical analysis** — moving averages (20, 50, 200), RSI, Bollinger Bands, volume.
 
-# Get all signals
-curl http://localhost:8000/signals
+**Market microstructure** — order book imbalance, trade flow toxicity, bid-ask spread.
 
-# Get specific symbol
-curl http://localhost:8000/signals/AAPL
+**Risk management** — Kelly Criterion position sizing, volatility-based stop-loss,
+risk-reward optimisation.
+
+These are then combined into one weighted score with a confidence value.
+
+![Architecture](screenshots/architecture.png)
+
+## Project layout
+
+```
+api/main.py                     FastAPI app, REST endpoints and WebSocket
+dashboard/app.py                Streamlit dashboard
+src/
+  data_collector.py             Market data (currently simulated)
+  signal_generator.py           Signal logic
+  microstructure_analyzer.py    Order flow and liquidity
+  risk_manager.py               Position sizing and stops
+config.py                       Symbols, thresholds, risk limits, API keys
 ```
 
-## 📈 Signal Strategy
+Tuning lives in `config.py`: `SYMBOLS`, `LOOKBACK_DAYS`, `SIGNAL_THRESHOLD`,
+`MAX_POSITIONS` and `RISK_LIMIT`.
 
-The system combines multiple analysis techniques:
+## Roadmap
 
-1. **Technical Analysis**: 
-   - Moving averages (20, 50, 200 periods)
-   - RSI (Relative Strength Index)
-   - Bollinger Bands
-   - Volume analysis
+- Real market data (Alpaca, Polygon)
+- Postgres persistence
+- Backtesting framework
+- ML-based signal optimisation
+- Multi-asset support
 
-2. **Market Microstructure**: 
-   - Order book imbalance
-   - Trade flow toxicity
-   - Bid-ask spread analysis
+## Licence
 
-3. **Risk Management**: 
-   - Kelly Criterion position sizing
-   - Dynamic stop-loss based on volatility
-   - Risk-reward ratio optimization
-
-4. **Signal Fusion**: 
-   - Weighted combination of multiple signals
-   - Confidence scoring
-   - Real-time adjustments
-
-## 📸 Screenshots
-
-### Dashboard
-![Dashboard Screenshot](screenshots/dashboard.png)
-
-## ⚠️ Disclaimer
-
-**Important**: This system currently uses simulated market data for demonstration purposes. It is not connected to live markets and should not be used for actual trading without:
-- Proper integration with real data feeds
-- Thorough backtesting
-- Risk management protocols
-- Regulatory compliance
-
-## 🔄 Roadmap
-
-### Version 1.0 (Current)
-- ✅ Core signal generation
-- ✅ WebSocket streaming
-- ✅ Streamlit dashboard
-- ✅ REST API
-
-### Version 2.0 (Planned)
-- [ ] Real market data integration (Alpaca, Polygon)
-- [ ] Database persistence (PostgreSQL)
-- [ ] User authentication
-- [ ] Backtesting framework
-
-### Version 3.0 (Future)
-- [ ] Machine learning optimization
-- [ ] Multi-asset support (crypto, forex)
-- [ ] Mobile application
-- [ ] Cloud deployment
-
-## 🛠️ Tech Stack
-
-- **Python 3.11+** - Core language
-- **FastAPI** - High-performance API framework
-- **Streamlit** - Interactive dashboards
-- **WebSockets** - Real-time communication
-- **Pandas** - Data analysis
-- **NumPy** - Numerical computations
-- **Plotly** - Interactive visualizations
-
-## 📊 Performance Metrics
-
-- Signal generation: <50ms per symbol
-- WebSocket latency: <100ms
-- Dashboard refresh: 2 seconds
-- Concurrent connections: 100+
-- Memory usage: <500MB
-- CPU usage: <20% (idle)
-
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 👤 Author
-
-**Paul Kwarteng**
-- LinkedIn: [Paul Kwarteng](https://www.linkedin.com/in/paul-kwarteng-22a71b196/)
-
----
-
-**Note**: This project demonstrates advanced financial data processing and real-time systems architecture. For production use, additional components such as data validation, error handling, and regulatory compliance would be required.
+MIT. Author: Paul Kwarteng ([LinkedIn](https://www.linkedin.com/in/paul-kwarteng-22a71b196/)).
